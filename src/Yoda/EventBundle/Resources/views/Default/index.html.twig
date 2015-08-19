@@ -1,0 +1,17 @@
+{# Hallo comment #}
+
+{% extends '::base.html.twig' %}
+
+{% block title 'Yay We did it :D' %}
+
+{% block body %}
+
+	{% for i in 1..count %}	
+		Hello <strong>{{ name|upper }}</strong> # {{i}}!
+	{% endfor %}
+
+	<h2>Event name</h2>
+	{{ event.name}} </br>
+	{{event.location}}
+	
+{% endblock %}
