@@ -16,8 +16,7 @@
                 {# the opening <form> tag #}
                 {{ form_start(form) }}
                     {{ form_errors(form) }}
-                    {{app.request.host}}
-                    {{app.session.get('some_key')}}
+                  
                     <h1>
                         {{ form_errors(form.name) }}
                         {{ form_widget(form.name) }}

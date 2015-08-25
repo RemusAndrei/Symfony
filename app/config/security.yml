@@ -3,19 +3,47 @@
 security:
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    encoders:
+        Yoda\UserBundle\Entity\User: bcrypt
+
+    role_hierarchy:
+        ROLE_ADMIN:         [ROLE_USER, ROLE_EVENT_CREATE, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_SUPER_ADMIN:   [ ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH ]
+
     providers:
-        in_memory:
-            memory: ~
+        our_database_users:
+            entity: {class: UserBundle:User }
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+        secured_area:
+            pattern: ^/
+            form_login:
+                check_path: login_check
+                login_path: login_form
+            logout:
+                path: logout
+                target: event
+            anonymous: ~
+            switch_user: ~
+            remember_me:
+                key: "Order 1138"
+            #http_basic:
+            #   realm: "Secured Demo Area"
 
         main:
             anonymous: ~
             # activate different ways to authenticate
+
+    access_control:
+    - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/(css|js), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/(_wdt|_profiler), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/, roles: ROLE_USER }
+# Putting security in the controller class instead!
+# - { path: ^/new, roles: ROLE_USER }
+# - { path: ^/create, roles: ROLE_USER }
 
             # http_basic: ~
             # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate

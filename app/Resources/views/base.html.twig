@@ -10,6 +10,7 @@
          {% endif %}
         </title>
         {% block stylesheets %}
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
             {% stylesheets 
                 'bundles/event/css/event.css'
                 'bundles/event/css/events.css'
@@ -23,6 +24,13 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+        {% if app.session.flashBag.has('success') %}
+            <div class="alert alert-success">
+                {% for msg in app.session.flashBag.get('success') %}
+                    {{ msg }}
+                {% endfor %}
+            </div>
+        {% endif %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
